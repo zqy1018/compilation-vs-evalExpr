@@ -1,0 +1,10 @@
+name = "Mini"
+version = "0.1.0"
+defaultTargets = ["mini"]
+
+[[lean_lib]]
+name = "Mini"
+
+[[lean_exe]]
+name = "mini"
+root = "Main"
