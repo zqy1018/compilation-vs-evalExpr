@@ -17,10 +17,11 @@ make_call() {
   local b="$2"
   case "$a" in
     0) printf "foo true %s" "$b" ;;
-    1) printf "foo' true %s" "$b" ;;
-    2) printf "isPrime %s" "$b" ;;
-    3) printf "isPrimeUsingClass true %s" "$b" ;;
-    4) printf "isPrimeNotUsingClass true %s" "$b" ;;
+    1) printf "fooUsingClass true %s" "$b" ;;
+    2) printf "fooNotUsingClass true %s" "$b" ;;
+    3) printf "isPrime %s" "$b" ;;
+    4) printf "isPrimeUsingClass true %s" "$b" ;;
+    5) printf "isPrimeNotUsingClass true %s" "$b" ;;
     *) return 1 ;;
   esac
 }
@@ -29,7 +30,7 @@ lake build mini
 mkdir -p output
 
 # main1, only provide arguments
-for j in {0..4}
+for j in {0..5}
 do
     for size in large small
     do
@@ -41,7 +42,7 @@ do
 done
 
 # main1, provide the complete function call
-for j in {0..4}
+for j in {0..5}
 do
     for size in large small
     do
@@ -53,7 +54,7 @@ do
 done
 
 # main2
-for j in {0..4}
+for j in {0..5}
 do
     for size in large small
     do

@@ -13,7 +13,7 @@ unsafe def elabAndEval (α : Type) (stx : Syntax) : TermElabM (Expr × α) := do
   pure (tm, res)
 
 -- The following code is inspired by `https://leanprover.zulipchat.com/#narrow/channel/270676-lean4/topic/Trouble.20parsing.20Lean.20code.20from.20string/`
-unsafe def parseAndEval (a : Fin 5) (code : String) : IO Bool := do
+unsafe def parseAndEval (a : Fin 6) (code : String) : IO Bool := do
   initSearchPath (← findSysroot)
   enableInitializersExecution
   let imports := #[`Lean, `Mini]
@@ -38,10 +38,11 @@ unsafe def parseAndEval (a : Fin 5) (code : String) : IO Bool := do
 
           match a with
           | 0 => return some <| @foo res1 res2
-          | 1 => return some <| @foo' res1 res2 res3
-          | 2 => return some <| @isPrime res2
-          | 3 => return some <| @isPrimeUsingClass res1 res2 res3
-          | 4 => return some <| @isPrimeNotUsingClass res1 res2 res3
+          | 1 => return some <| @fooUsingClass res1 res2 res3
+          | 2 => return some <| @fooNotUsingClass res1 res2 res3
+          | 3 => return some <| @isPrime res2
+          | 4 => return some <| @isPrimeUsingClass res1 res2 res3
+          | 5 => return some <| @isPrimeNotUsingClass res1 res2 res3
         | _ =>
           -- Directly parse and eval the call
           IO.println "call case"
@@ -55,20 +56,21 @@ def main1 (xs : List String) : IO Unit := do
   -- Read input from `stdin`
   let stdin ← IO.getStdin
   let code ← stdin.readToEnd
-  let a := Fin.ofNat 5 (xs[1]?.bind String.toNat? |>.getD 0)
+  let a := Fin.ofNat 6 (xs[1]?.bind String.toNat? |>.getD 0)
   let result ← unsafe parseAndEval a code
   IO.println s!"{result}"
 
 def main2 (xs : List String) : IO Unit := do
   -- Read the number from `xs[2]`
-  let a := Fin.ofNat 5 (xs[1]?.bind String.toNat? |>.getD 0)
+  let a := Fin.ofNat 6 (xs[1]?.bind String.toNat? |>.getD 0)
   let res2 := xs[2]?.bind String.toNat? |>.getD 3
   let test := match a with
     | 0 => foo true res2
-    | 1 => foo' true res2
-    | 2 => isPrime res2
-    | 3 => isPrimeUsingClass true res2
-    | 4 => isPrimeNotUsingClass true res2
+    | 1 => fooUsingClass true res2
+    | 2 => fooNotUsingClass true res2
+    | 3 => isPrime res2
+    | 4 => isPrimeUsingClass true res2
+    | 5 => isPrimeNotUsingClass true res2
   IO.println s!"{test}"
 
 def main (xs : List String) : IO Unit :=

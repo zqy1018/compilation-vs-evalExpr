@@ -7,8 +7,11 @@ instance : MyClass true n where
 def foo (b : Bool) (n : Nat) : Bool :=
   if b then n % 2 == 0 else n % 3 == 0
 
+def fooUsingClass (b : Bool) (n : Nat) [inst : MyClass b n] : Bool :=
+  if b then inst.f n else n % 5 == 0
+
 set_option linter.unusedVariables false in
-def foo' (b : Bool) (n : Nat) [inst : MyClass b n] : Bool :=
+def fooNotUsingClass (b : Bool) (n : Nat) [inst : MyClass b n] : Bool :=
   if b then n % 4 == 0 else n % 5 == 0
 
 def isPrime (n : Nat) : Bool := Id.run do

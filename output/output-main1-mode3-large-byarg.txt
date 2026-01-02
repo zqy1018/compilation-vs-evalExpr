@@ -1,3 +1,2 @@
-
-Stack overflow detected. Aborting.
 argument case
+true
