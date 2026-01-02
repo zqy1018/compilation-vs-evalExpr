@@ -1,0 +1,3 @@
+Bool.true
+OfNat.ofNat.{0} Nat 998244353 (instOfNatNat 998244353)
+false
