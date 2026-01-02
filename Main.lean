@@ -8,7 +8,7 @@ unsafe def elabAndEval (α : Type) (stx : Syntax) : TermElabM (Expr × α) := do
   synthesizeSyntheticMVarsNoPostponing
   let tm ← instantiateMVars tm
   let ty ← inferType tm
-  IO.println s!"{tm}"
+  -- IO.println s!"{tm}"
   let res ← evalExpr α ty tm
   pure (tm, res)
 
@@ -29,6 +29,7 @@ unsafe def parseAndEval (a : Fin 5) (code : String) : IO Bool := do
         match stx with
         | `(($stx1:term, $stx2:term)) =>
           -- IO.println s!"Tuple detected: {stx1}, {stx2}"
+          IO.println "argument case"
           let (tm1, res1) ← elabAndEval Bool stx1
           let (tm2, res2) ← elabAndEval Nat stx2
           let tminst ← synthInstance (mkAppN (mkConst ``MyClass) #[tm1, tm2])
@@ -41,7 +42,11 @@ unsafe def parseAndEval (a : Fin 5) (code : String) : IO Bool := do
           | 2 => return some <| @isPrime res2
           | 3 => return some <| @isPrimeUsingClass res1 res2 res3
           | 4 => return some <| @isPrimeNotUsingClass res1 res2 res3
-        | _ => return none
+        | _ =>
+          -- Directly parse and eval the call
+          IO.println "call case"
+          let (_, res) ← elabAndEval Bool stx
+          return some res
 
   let some ioResult := ioResult | throw (IO.userError s!"Failed to parse input")
   return ioResult
