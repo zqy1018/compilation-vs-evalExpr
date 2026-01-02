@@ -1,3 +1,0 @@
-Bool.true
-OfNat.ofNat.{0} Nat 6306436948373 (instOfNatNat 6306436948373)
-false
